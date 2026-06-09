@@ -23,20 +23,17 @@ const ICONS: Record<string, Mark> = {
 // then to an Archivo wordmark.
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const logosDir = path.join(process.cwd(), "public", "logos");
-let dropped = new Set<string>();
+const droppedFiles = new Map<string, string>(); // slug -> filename (with ext)
 try {
-  dropped = new Set(
-    fs
-      .readdirSync(logosDir)
-      .filter((f) => f.endsWith(".svg"))
-      .map((f) => f.slice(0, -4)),
-  );
+  for (const f of fs.readdirSync(logosDir)) {
+    if (/\.(svg|png)$/i.test(f)) droppedFiles.set(f.replace(/\.(svg|png)$/i, ""), f);
+  }
 } catch {
   // no logos directory yet
 }
 
 const pad = (n: number) => String(n + 1).padStart(2, "0");
-const logoUrl = (slug: string) => `${base}/logos/${slug}.svg`;
+const logoUrl = (file: string) => `${base}/logos/${file}`;
 ---
 
 <section id="brands">
@@ -49,17 +46,18 @@ const logoUrl = (slug: string) => `${base}/logos/${slug}.svg`;
     <ul class="ledger">
       {brands.map((b, i) => {
         const icon = b.iconKey ? ICONS[b.iconKey] : undefined;
-        const hasFile = dropped.has(b.slug);
+        const file = droppedFiles.get(b.slug);
         return (
           <li class="cell">
             <span class="idx font-mono">{pad(i)}</span>
-            {hasFile ? (
-              <span
-                class="logo-mask"
-                style={`--src:url('${logoUrl(b.slug)}')`}
-                role="img"
-                aria-label={b.name}
-              ></span>
+            {file ? (
+              <img
+                class="logo-img"
+                src={logoUrl(file)}
+                alt={b.name}
+                loading="lazy"
+                decoding="async"
+              />
             ) : icon ? (
               <svg class="logo" viewBox="0 0 24 24" role="img" aria-label={b.name}>
                 <title>{b.name}</title>
@@ -131,19 +129,20 @@ const logoUrl = (slug: string) => `${base}/logos/${slug}.svg`;
   .cell:hover .logo {
     color: var(--color-red);
   }
-  /* Dropped-in SVGs: masked to a uniform ink silhouette regardless of source colour. */
-  .logo-mask {
-    display: block;
-    width: 130px;
-    max-width: 78%;
-    height: 34px;
-    background-color: var(--color-ink);
-    -webkit-mask: var(--src) center / contain no-repeat;
-    mask: var(--src) center / contain no-repeat;
-    transition: background-color 0.15s;
+  /* Dropped-in logos: real <img>, grayscale + multiply so any white/coloured
+     background drops out onto the cream. Full colour on hover. */
+  .logo-img {
+    max-width: 80%;
+    max-height: 42px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: grayscale(1);
+    mix-blend-mode: multiply;
+    transition: filter 0.2s;
   }
-  .cell:hover .logo-mask {
-    background-color: var(--color-red);
+  .cell:hover .logo-img {
+    filter: none;
   }
   .wordmark {
     font-weight: 800;
