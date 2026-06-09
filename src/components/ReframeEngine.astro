@@ -17,7 +17,6 @@ import MarginRail from "./MarginRail.astro";
       </div>
       <div class="obv-wrap">
         <span class="obv" id="obvText"></span>
-        <span class="redline" aria-hidden="true"></span>
       </div>
       <div class="reframe font-display" id="reframeText" aria-live="polite"></div>
       <div class="controls">
@@ -53,32 +52,23 @@ import MarginRail from "./MarginRail.astro";
     border-radius: 50%;
   }
   .obv-wrap {
-    position: relative;
     padding: 8px 0 4px;
   }
   .obv {
     font-size: clamp(19px, 2vw, 24px);
     color: #4f4a40;
-    line-height: 1.4;
+    line-height: 1.5;
     font-style: italic;
-    transition: color 0.4s ease;
+    /* Real per-line strikethrough so it crosses every wrapped line.
+       Hidden (transparent) until struck, then the red pen fades in. */
+    text-decoration-line: line-through;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 3px;
+    transition: text-decoration-color 0.45s ease, color 0.4s ease;
   }
   .engine.struck .obv {
     color: #8a8475;
-  }
-  .redline {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    height: 3px;
-    background: var(--color-red);
-    width: 100%;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
-  }
-  .engine.struck .redline {
-    transform: scaleX(1);
+    text-decoration-color: var(--color-red);
   }
   .reframe {
     font-weight: 800;
