@@ -1,0 +1,142 @@
+---
+const links = [
+  { href: "#reframe", label: "The Reframe" },
+  { href: "#work", label: "Work" },
+  { href: "#brands", label: "Brands" },
+  { href: "#about", label: "About" },
+  { href: "#contact", label: "Reach out" },
+];
+---
+
+<nav>
+  <div class="wrap nav-inner">
+    <a href="#top" class="name font-display">TANYA<b>.</b>SINGH</a>
+    <div class="nav-right">
+      <ul class="links font-mono">
+        {links.map((l) => (
+          <li><a href={l.href}>{l.label}</a></li>
+        ))}
+      </ul>
+      <button id="markup-toggle" class="markup-btn font-mono" type="button" aria-pressed="false">
+        <span class="mb-dot" aria-hidden="true"></span>
+        <span class="mb-label">Show markup</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<style>
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--color-paper);
+    border-bottom: 1px solid var(--rule-strong);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 62px;
+    gap: 20px;
+  }
+  .name {
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    line-height: 1;
+  }
+  .name b {
+    color: var(--color-red);
+  }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+  }
+  .links {
+    display: flex;
+    gap: 22px;
+    list-style: none;
+  }
+  .links a {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-ink-soft);
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .links a:hover {
+    color: var(--color-ink);
+    border-color: var(--color-red);
+  }
+
+  .markup-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    background: transparent;
+    border: 1px solid var(--rule-strong);
+    padding: 7px 12px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .markup-btn:hover {
+    border-color: var(--color-red);
+  }
+  .mb-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid var(--color-red);
+    background: transparent;
+    transition: background 0.15s;
+  }
+  :global(html[data-markup="on"]) .mb-dot {
+    background: var(--color-red);
+  }
+  :global(html[data-markup="on"]) .markup-btn {
+    border-color: var(--color-red);
+    color: var(--color-red);
+  }
+
+  :where(.links a, .markup-btn, .name):focus-visible {
+    outline: 3px solid var(--color-red);
+    outline-offset: 3px;
+  }
+
+  @media (max-width: 760px) {
+    .links {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const KEY = "ts-markup";
+  const root = document.documentElement;
+  const btn = document.getElementById("markup-toggle");
+  const label = btn?.querySelector<HTMLElement>(".mb-label");
+
+  function apply(on: boolean) {
+    root.dataset.markup = on ? "on" : "off";
+    btn?.setAttribute("aria-pressed", String(on));
+    if (label) label.textContent = on ? "Hide markup" : "Show markup";
+  }
+
+  apply(localStorage.getItem(KEY) === "on");
+
+  btn?.addEventListener("click", () => {
+    const on = root.dataset.markup !== "on";
+    localStorage.setItem(KEY, on ? "on" : "off");
+    apply(on);
+  });
+</script>

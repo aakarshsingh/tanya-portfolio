@@ -1,0 +1,37 @@
+---
+// Thin red scroll-progress rule pinned to the top edge. The editor's pen
+// tracking how far down the page you've read.
+---
+
+<div class="scroll-redline" aria-hidden="true"><span id="sr-bar"></span></div>
+
+<style>
+  .scroll-redline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    z-index: 60;
+    pointer-events: none;
+  }
+  #sr-bar {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: var(--color-red);
+  }
+</style>
+
+<script>
+  const bar = document.getElementById("sr-bar");
+  function update() {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    const p = max > 0 ? h.scrollTop / max : 0;
+    if (bar) bar.style.width = `${p * 100}%`;
+  }
+  update();
+  window.addEventListener("scroll", update, { passive: true });
+  window.addEventListener("resize", update);
+</script>

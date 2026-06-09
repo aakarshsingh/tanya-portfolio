@@ -1,0 +1,24 @@
+---
+// An editor's margin note. Hidden by default; revealed when the page is
+// in "Show markup" mode (html[data-markup="on"]). Renders as an inline
+// red-ruled note — the page's track-changes layer. See .state/design.md.
+---
+
+<span class="annot font-mono"><slot /></span>
+
+<style>
+  .annot {
+    display: none;
+    margin-top: 0.55rem;
+    padding-left: 0.6rem;
+    border-left: 2px solid var(--color-red);
+    font-size: var(--text-mono-sm);
+    letter-spacing: 0.04em;
+    line-height: 1.4;
+    color: var(--color-red);
+    text-transform: uppercase;
+  }
+  :global(html[data-markup="on"]) .annot {
+    display: block;
+  }
+</style>

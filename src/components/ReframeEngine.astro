@@ -1,0 +1,169 @@
+---
+import { reframes } from "../data/reframes.ts";
+import MarginRail from "./MarginRail.astro";
+---
+
+<section id="reframe">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="num">01</span>
+      <h2>I don't make copy longer. I make it land.</h2>
+    </div>
+
+    <div class="engine" id="engine">
+      <div class="label">
+        <span class="dot" aria-hidden="true"></span>
+        <span class="eyebrow">The Obvious</span>
+      </div>
+      <div class="obv-wrap">
+        <span class="obv" id="obvText"></span>
+        <span class="redline" aria-hidden="true"></span>
+      </div>
+      <div class="reframe font-display" id="reframeText" aria-live="polite"></div>
+      <div class="controls">
+        <button class="btn" id="reframeBtn" type="button">Reframe it</button>
+        <button class="btn ghost" id="nextBtn" type="button">Next example →</button>
+      </div>
+      <div class="meter font-mono" id="meter" aria-live="polite"></div>
+    </div>
+
+    <MarginRail>Live word count — proof it lands, not just shorter</MarginRail>
+  </div>
+
+  <script type="application/json" id="reframe-data" is:inline set:html={JSON.stringify(reframes)} />
+</section>
+
+<style>
+  .engine {
+    border: 2px solid var(--color-ink);
+    background: var(--color-card);
+    padding: clamp(24px, 4vw, 52px);
+    box-shadow: 6px 6px 0 var(--color-ink);
+  }
+  .label {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .dot {
+    width: 9px;
+    height: 9px;
+    background: var(--color-red);
+    border-radius: 50%;
+  }
+  .obv-wrap {
+    position: relative;
+    padding: 8px 0 4px;
+  }
+  .obv {
+    font-size: clamp(19px, 2vw, 24px);
+    color: var(--color-ink-soft);
+    line-height: 1.4;
+    font-style: italic;
+    transition: color 0.4s ease;
+  }
+  .engine.struck .obv {
+    color: rgba(107, 101, 87, 0.55);
+  }
+  .redline {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    height: 3px;
+    background: var(--color-red);
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .engine.struck .redline {
+    transform: scaleX(1);
+  }
+  .reframe {
+    font-weight: 800;
+    line-height: 1.05;
+    font-size: clamp(26px, 3.6vw, 46px);
+    margin-top: 26px;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: translateY(12px);
+    transition: opacity 0.45s ease, transform 0.45s ease, max-height 0.5s ease;
+  }
+  .engine.struck .reframe {
+    max-height: 600px;
+    opacity: 1;
+    transform: none;
+  }
+  .controls {
+    display: flex;
+    gap: 14px;
+    margin-top: 34px;
+    flex-wrap: wrap;
+  }
+  .meter {
+    font-size: 12px;
+    color: var(--color-ink-soft);
+    margin-top: 18px;
+    letter-spacing: 0.04em;
+  }
+</style>
+
+<script>
+  interface Pair {
+    obvious: string;
+    reframe: string;
+  }
+
+  const dataEl = document.getElementById("reframe-data");
+  const pairs: Pair[] = dataEl ? JSON.parse(dataEl.textContent || "[]") : [];
+
+  const engine = document.getElementById("engine");
+  const obvEl = document.getElementById("obvText");
+  const reEl = document.getElementById("reframeText");
+  const btn = document.getElementById("reframeBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const meter = document.getElementById("meter");
+
+  let i = 0;
+
+  const wc = (s: string): number => s.trim().split(/\s+/).filter(Boolean).length;
+
+  function setMeter(struck: boolean): void {
+    if (!meter || pairs.length === 0) return;
+    const o = wc(pairs[i].obvious);
+    const r = wc(pairs[i].reframe);
+    const cut = Math.round((1 - r / o) * 100);
+    meter.textContent = struck
+      ? `${o} words → ${r} words · ${cut}% cut`
+      : `${o} words · before`;
+  }
+
+  function render(): void {
+    if (pairs.length === 0) return;
+    if (obvEl) obvEl.textContent = pairs[i].obvious;
+    if (reEl) reEl.textContent = pairs[i].reframe;
+    setMeter(engine?.classList.contains("struck") ?? false);
+  }
+
+  function reset(): void {
+    engine?.classList.remove("struck");
+    if (btn) btn.textContent = "Reframe it";
+  }
+
+  btn?.addEventListener("click", () => {
+    const struck = engine?.classList.toggle("struck") ?? false;
+    if (btn) btn.textContent = struck ? "Show the obvious" : "Reframe it";
+    setMeter(struck);
+  });
+
+  nextBtn?.addEventListener("click", () => {
+    if (pairs.length === 0) return;
+    i = (i + 1) % pairs.length;
+    reset();
+    render();
+  });
+
+  render();
+</script>

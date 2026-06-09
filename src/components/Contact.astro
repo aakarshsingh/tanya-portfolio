@@ -1,0 +1,76 @@
+---
+import MarginRail from "./MarginRail.astro";
+---
+
+<section id="contact" class="contact">
+  <div class="wrap">
+    <span class="eyebrow">Reach out</span>
+    <p class="pitch font-display">
+      Reach out if you want to tighten, sharpen, and build things that land
+      hard. <span class="no">Don't reach out for a polished first draft.</span>
+    </p>
+    <a class="contact-mail font-display" href="mailto:tanyaasingh96@gmail.com">
+      tanyaasingh96@gmail.com <span class="arrow" aria-hidden="true">→</span>
+    </a>
+    <p class="secondary font-mono">
+      Or find me on
+      <a href="https://www.linkedin.com/in/tanyaasingh" target="_blank" rel="noopener">LinkedIn</a>.
+    </p>
+    <MarginRail>The anti-form · no fields, just a line</MarginRail>
+  </div>
+</section>
+
+<style>
+  .contact {
+    padding: 90px 0 40px;
+    border-bottom: 0;
+  }
+  .pitch {
+    font-weight: 800;
+    font-size: clamp(26px, 4vw, 52px);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    max-width: 18ch;
+    margin-top: 16px;
+  }
+  .pitch .no {
+    color: var(--color-red);
+  }
+  .contact-mail {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 40px;
+    font-weight: 900;
+    font-size: clamp(24px, 4vw, 46px);
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    border-bottom: 3px solid var(--color-red);
+    padding-bottom: 6px;
+  }
+  .contact-mail .arrow {
+    color: var(--color-red);
+    transition: transform 0.2s;
+  }
+  .contact-mail:hover .arrow {
+    transform: translateX(8px);
+  }
+  .contact-mail:focus-visible {
+    outline: 3px solid var(--color-red);
+    outline-offset: 4px;
+  }
+  .secondary {
+    margin-top: 30px;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+  .secondary a {
+    color: var(--color-ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+  }
+  .secondary a:hover {
+    color: var(--color-red);
+    border-color: var(--color-red);
+  }
+</style>

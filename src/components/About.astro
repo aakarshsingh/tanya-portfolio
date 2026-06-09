@@ -1,0 +1,165 @@
+---
+import { timeline } from "../data/timeline.ts";
+import { education } from "../data/education.ts";
+import MarginRail from "./MarginRail.astro";
+---
+
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="num">04</span>
+      <h2>The path here.</h2>
+    </div>
+
+    <p class="bio">
+      I simplify ideas. I spot patterns in behaviour. I build relationships that
+      last. Started in qualitative research. Moved into brand strategy. Ended up
+      in startups. The throughline never changed: make the complex land.
+    </p>
+    <MarginRail>Bio · written the way she'd say it</MarginRail>
+
+    <div class="tl">
+      {timeline.map((job) => (
+        <div class="job">
+          <span class="yr font-mono">{job.period}</span>
+          <span class="co font-display">{job.company}</span>
+          <span class="pos font-mono">{job.role}</span>
+        </div>
+      ))}
+    </div>
+
+    <h3 class="sub font-mono">Education</h3>
+    <div class="edu">
+      {education.map((e) => (
+        <div class="edu-row">
+          <span class="yr font-mono">{e.period}</span>
+          <span class="school font-display">{e.school}</span>
+          <span class="detail">{e.detail}</span>
+        </div>
+      ))}
+    </div>
+
+    <div class="tantrum">
+      <span class="tt-eyebrow font-mono">Also built</span>
+      <span class="tt-name font-display">tan<span class="lc">-</span>trum</span>
+      <span class="tt-desc">A proprietary writing system.</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .bio {
+    font-size: var(--text-lede);
+    line-height: 1.4;
+    max-width: 30ch;
+    font-weight: 500;
+  }
+
+  .tl {
+    margin-top: 48px;
+    border-top: 1px solid var(--color-ink);
+  }
+  .job {
+    display: grid;
+    grid-template-columns: 130px 1fr auto;
+    gap: 24px;
+    align-items: baseline;
+    padding: 22px 4px;
+    border-bottom: 1px solid var(--rule);
+    transition: padding-left 0.15s, background 0.15s;
+  }
+  .job:hover {
+    padding-left: 14px;
+    background: var(--color-card);
+  }
+  .yr {
+    font-size: 13px;
+    color: var(--color-ink-soft);
+  }
+  .co {
+    font-weight: 800;
+    font-size: clamp(18px, 2.4vw, 28px);
+    letter-spacing: -0.01em;
+  }
+  .pos {
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+    text-align: right;
+  }
+
+  .sub {
+    margin-top: 56px;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-red);
+  }
+  .edu {
+    margin-top: 18px;
+    border-top: 1px solid var(--rule);
+  }
+  .edu-row {
+    display: grid;
+    grid-template-columns: 130px 1fr auto;
+    gap: 24px;
+    align-items: baseline;
+    padding: 16px 4px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .school {
+    font-weight: 800;
+    font-size: clamp(16px, 2vw, 22px);
+    letter-spacing: -0.01em;
+  }
+  .detail {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--color-ink-soft);
+    text-align: right;
+  }
+
+  .tantrum {
+    margin-top: 56px;
+    background: var(--color-ink);
+    color: var(--color-paper);
+    padding: 26px 28px;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 14px 18px;
+  }
+  .tt-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(242, 238, 227, 0.6);
+  }
+  .tt-name {
+    font-weight: 900;
+    font-size: clamp(24px, 4vw, 40px);
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .tt-name .lc {
+    color: var(--color-red);
+  }
+  .tt-desc {
+    font-size: 16px;
+    color: rgba(242, 238, 227, 0.85);
+  }
+
+  @media (max-width: 640px) {
+    .job,
+    .edu-row {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+    .pos,
+    .detail {
+      text-align: left;
+    }
+  }
+</style>

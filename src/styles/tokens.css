@@ -1,0 +1,30 @@
+/* Design tokens for the "Redline" system. See .state/design.md.
+   @theme exposes these to Tailwind v4 as utilities (bg-paper, text-ink,
+   font-display, text-display-xl, ...) and as plain CSS custom properties. */
+@theme {
+  /* Paper / ink / the pen */
+  --color-paper: #f2eee3;
+  --color-paper-raise: #f7f4ec;
+  --color-card: #ffffff;
+  --color-ink: #141312;
+  --color-ink-soft: #6b6557;
+  --color-red: #d6241c;
+
+  /* Type families */
+  --font-display: "Archivo", sans-serif;
+  --font-serif: "Newsreader", Georgia, serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
+
+  /* Fluid type scale */
+  --text-display-xl: clamp(2.4rem, 7vw, 5.75rem);
+  --text-display: clamp(2.1rem, 5.5vw, 4.75rem);
+  --text-h2: clamp(1.5rem, 3vw, 2.5rem);
+  --text-lede: clamp(1.15rem, 2.4vw, 1.875rem);
+  --text-mono-sm: clamp(0.7rem, 0.3vw + 0.62rem, 0.8rem);
+}
+
+/* Non-tokenized helpers (rule strokes the design uses directly). */
+:root {
+  --rule: rgba(20, 19, 18, 0.16);
+  --rule-strong: rgba(20, 19, 18, 0.85);
+}

@@ -1,0 +1,18 @@
+---
+import { cases } from "../data/cases.ts";
+import CaseStudy from "./CaseStudy.astro";
+import MarginRail from "./MarginRail.astro";
+---
+
+<section id="work">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="num">02</span>
+      <h2>The tension. The pattern. The strategy.</h2>
+    </div>
+
+    {cases.map((c) => <CaseStudy data={c} />)}
+
+    <MarginRail>Formula, not narrative · tension + pattern = strategy</MarginRail>
+  </div>
+</section>
