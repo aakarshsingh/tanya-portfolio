@@ -105,7 +105,7 @@ const links = [
   }
   :global(html[data-markup="on"]) .markup-btn {
     border-color: var(--color-red);
-    color: var(--color-red);
+    color: var(--color-red-text);
   }
 
   :where(.links a, .markup-btn, .name):focus-visible {
@@ -113,9 +113,35 @@ const links = [
     outline-offset: 3px;
   }
 
+  /* Mobile: links become a slim horizontal scroll row under the bar
+     instead of disappearing. No JS, no hamburger state. */
   @media (max-width: 760px) {
+    .nav-inner {
+      flex-wrap: wrap;
+      height: auto;
+      padding-top: 12px;
+      gap: 0 20px;
+    }
+    .nav-right {
+      display: contents;
+    }
     .links {
+      order: 3;
+      flex: 1 1 100%;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 18px;
+      padding: 12px 0;
+      scrollbar-width: none;
+    }
+    .links::-webkit-scrollbar {
       display: none;
+    }
+    .links li {
+      flex: 0 0 auto;
+    }
+    .links a {
+      white-space: nowrap;
     }
   }
 </style>

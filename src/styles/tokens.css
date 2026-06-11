@@ -9,6 +9,10 @@
   --color-ink: #141312;
   --color-ink-soft: #6b6557;
   --color-red: #d6241c;
+  /* AA red for small text: 5.21:1 on paper (base red is 4.39:1).
+     Use for red text under ~18px; the pen keeps --color-red for
+     display sizes, strokes, and marks. */
+  --color-red-text: #c0211a;
 
   /* Type families */
   --font-display: "Archivo", sans-serif;

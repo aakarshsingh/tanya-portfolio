@@ -3,9 +3,15 @@ const year = new Date().getFullYear();
 ---
 
 <footer>
-  <div class="wrap foot-inner font-mono">
-    <span>© {year} Tanya Singh</span>
-    <span>Strategy without the fluff.</span>
+  <div class="wrap">
+    <p class="colophon font-mono">
+      Set in Archivo, Newsreader and Space Mono. Cream paper, ink, one red
+      pen. No template.
+    </p>
+    <div class="foot-inner font-mono">
+      <span>© {year} Tanya Singh</span>
+      <span>Strategy without the fluff.</span>
+    </div>
   </div>
 </footer>
 
@@ -13,6 +19,14 @@ const year = new Date().getFullYear();
   footer {
     padding: 40px 0;
     border-top: 1px solid var(--color-ink);
+  }
+  .colophon {
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    line-height: 1.6;
+    color: var(--color-ink-soft);
+    max-width: 44ch;
+    margin-bottom: 22px;
   }
   .foot-inner {
     display: flex;

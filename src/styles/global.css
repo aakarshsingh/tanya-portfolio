@@ -64,7 +64,7 @@ section {
 }
 .sec-head .num {
   font-family: var(--font-mono);
-  color: var(--color-red);
+  color: var(--color-red-text);
   font-size: 14px;
 }
 .sec-head h2 {
@@ -89,8 +89,8 @@ section {
   transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
 .btn:hover {
-  background: var(--color-red);
-  border-color: var(--color-red);
+  background: var(--color-red-text);
+  border-color: var(--color-red-text);
 }
 .btn.ghost {
   background: transparent;

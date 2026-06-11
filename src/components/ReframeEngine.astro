@@ -21,7 +21,7 @@ import MarginRail from "./MarginRail.astro";
       <div class="reframe font-display" id="reframeText" aria-live="polite"></div>
       <div class="controls">
         <button class="btn" id="reframeBtn" type="button">Reframe it</button>
-        <button class="btn ghost" id="nextBtn" type="button">Next example →</button>
+        <button class="btn ghost" id="nextBtn" type="button">Next example <span aria-hidden="true">→</span></button>
       </div>
       <div class="meter font-mono" id="meter" aria-live="polite"></div>
     </div>
@@ -117,6 +117,8 @@ import MarginRail from "./MarginRail.astro";
   const meter = document.getElementById("meter");
 
   let i = 0;
+  let interacted = false;
+  let autoTimer: number | undefined;
 
   const wc = (s: string): number => s.trim().split(/\s+/).filter(Boolean).length;
 
@@ -137,23 +139,44 @@ import MarginRail from "./MarginRail.astro";
     setMeter(engine?.classList.contains("struck") ?? false);
   }
 
-  function reset(): void {
-    engine?.classList.remove("struck");
-    if (btn) btn.textContent = "Reframe it";
+  function setStruck(on: boolean): void {
+    engine?.classList.toggle("struck", on);
+    if (btn) btn.textContent = on ? "Show the obvious" : "Reframe it";
+    setMeter(on);
   }
 
   btn?.addEventListener("click", () => {
-    const struck = engine?.classList.toggle("struck") ?? false;
-    if (btn) btn.textContent = struck ? "Show the obvious" : "Reframe it";
-    setMeter(struck);
+    interacted = true;
+    window.clearTimeout(autoTimer);
+    setStruck(!(engine?.classList.contains("struck") ?? false));
   });
 
   nextBtn?.addEventListener("click", () => {
     if (pairs.length === 0) return;
+    interacted = true;
+    window.clearTimeout(autoTimer);
     i = (i + 1) % pairs.length;
-    reset();
+    setStruck(false);
     render();
   });
 
   render();
+
+  // Auto-demo: strike the first example once when the engine scrolls into
+  // view, so passive readers still see the proof. Skipped for reduced
+  // motion; cancelled the moment the visitor interacts themselves.
+  const motionOK = window.matchMedia("(prefers-reduced-motion: no-preference)").matches;
+  if (motionOK && engine && pairs.length > 0) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        autoTimer = window.setTimeout(() => {
+          if (!interacted && !engine.classList.contains("struck")) setStruck(true);
+        }, 900);
+      },
+      { threshold: 0.45 },
+    );
+    io.observe(engine);
+  }
 </script>

@@ -1,0 +1,95 @@
+---
+import { outtakes } from "../data/outtakes.ts";
+import MarginRail from "./MarginRail.astro";
+---
+
+<section id="cutting-room" class="cutting">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">The cutting room floor</span>
+      <span class="note font-mono">Drafts of this page that didn't survive the pen.</span>
+    </div>
+
+    <ul class="floor">
+      {outtakes.map((o) => (
+        <li class:list={["draft", { kept: o.kept }]}>
+          <span class="stamp font-mono" aria-hidden="true">{o.kept ? "Kept" : "Cut"}</span>
+          <span class:list={["line", o.kept ? "font-display" : "font-serif"]}>
+            {o.line}
+            <span class="sr-only">{o.kept ? " (kept)" : " (cut)"}</span>
+          </span>
+        </li>
+      ))}
+    </ul>
+
+    <MarginRail>Five drafts. One survivor.</MarginRail>
+  </div>
+</section>
+
+<style>
+  .cutting {
+    padding: 56px 0 64px;
+    border-top: 1px solid var(--rule);
+  }
+  .head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    margin-bottom: 28px;
+  }
+  .note {
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--color-ink-soft);
+  }
+  .floor {
+    list-style: none;
+    border-top: 1px solid var(--rule);
+  }
+  .draft {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    padding: 14px 4px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .stamp {
+    flex: 0 0 auto;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+    border: 1px solid var(--rule);
+    padding: 2px 8px;
+  }
+  .draft.kept .stamp {
+    color: var(--color-paper);
+    background: var(--color-red-text);
+    border-color: var(--color-red-text);
+  }
+  .line {
+    font-size: clamp(16px, 2vw, 20px);
+    line-height: 1.45;
+  }
+  .draft:not(.kept) .line {
+    font-style: italic;
+    color: var(--color-ink-soft);
+    text-decoration-line: line-through;
+    text-decoration-color: var(--color-red);
+    text-decoration-thickness: 2px;
+  }
+  .draft.kept .line {
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+</style>
